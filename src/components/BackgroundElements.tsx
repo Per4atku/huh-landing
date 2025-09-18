@@ -1,13 +1,77 @@
-import React, { useRef } from "react";
+// BackgroundElements.jsx
+"use client";
+
+import React, { useRef, useEffect } from "react";
 import Image from "next/image";
 import { motion, useMotionValue, useSpring } from "framer-motion";
 
 const IMAGE_SCALE = 0.8;
 
+// visual springs for most elements
+const SPRING_CONFIG = { stiffness: 110, damping: 20 };
+
+// a slightly heavier (more damped) spring for the pomodoro <-> clock pair
+const POM_CLOCK_SPRING = { stiffness: 100, damping: 26 };
+
+// default coupling strength (fraction of delta to nudge follower)
+const DEFAULT_COUPLING = 0.08;
+// weaker coupling specifically for pomodoro <-> clock
+const POM_CLOCK_COUPLING = 0.05;
+
+// ignore tiny differences under this threshold (pixels)
+const COUPLING_DEADZONE = 0.6;
+
+// optional safety clamp: if leader-follower distance is huge, jump follower closer
+const MAX_JUMP_DISTANCE = 220;
+
+function useCoupling({
+  leader,
+  follower,
+  draggingRef,
+  blockedWhenDraggingName,
+  coupling = DEFAULT_COUPLING,
+  deadzone = COUPLING_DEADZONE,
+  maxJump = MAX_JUMP_DISTANCE,
+}) {
+  useEffect(() => {
+    const unsub = leader.onChange(() => {
+      if (draggingRef.current === blockedWhenDraggingName) return;
+      const L = leader.get();
+      const F = follower.get();
+      const delta = L - F;
+
+      // deadzone: ignore tiny differences to avoid micro-jitter
+      if (Math.abs(delta) < deadzone) return;
+
+      // if distance is enormous, move follower closer in a single jump
+      if (Math.abs(delta) > maxJump) {
+        const target = L - Math.sign(delta) * (maxJump * 0.5); // land somewhat close
+        follower.set(target);
+        return;
+      }
+
+      follower.set(F + delta * coupling);
+    });
+
+    return () => {
+      if (typeof unsub === "function") unsub();
+    };
+  }, [
+    leader,
+    follower,
+    draggingRef,
+    blockedWhenDraggingName,
+    coupling,
+    deadzone,
+    maxJump,
+  ]);
+}
+
 export default function BackgroundElements() {
   const containerRef = useRef(null);
+  const dragging = useRef(null);
 
-  // RAW motion values (the single source of truth) — updated explicitly onDrag
+  // RAW motion values
   const prodRawX = useMotionValue(0);
   const prodRawY = useMotionValue(0);
 
@@ -24,8 +88,7 @@ export default function BackgroundElements() {
   const integrationsRawX = useMotionValue(0);
   const integrationsRawY = useMotionValue(0);
 
-  // smooth springs that follow RAW values (these are used for visuals)
-  const SPRING_CONFIG = { stiffness: 110, damping: 20 };
+  // smooth springs that follow RAW values (used for visuals)
   const prodX = useSpring(prodRawX, SPRING_CONFIG);
   const prodY = useSpring(prodRawY, SPRING_CONFIG);
 
@@ -34,81 +97,86 @@ export default function BackgroundElements() {
   const myRemindersX = useSpring(myRemindersRawX, SPRING_CONFIG);
   const myRemindersY = useSpring(myRemindersRawY, SPRING_CONFIG);
 
-  const pomodoroX = useSpring(pomodoroRawX, SPRING_CONFIG);
-  const pomodoroY = useSpring(pomodoroRawY, SPRING_CONFIG);
-  const clockX = useSpring(clockRawX, SPRING_CONFIG);
-  const clockY = useSpring(clockRawY, SPRING_CONFIG);
+  // use a slightly heavier spring for pomodoro <-> clock pair
+  const pomodoroX = useSpring(pomodoroRawX, POM_CLOCK_SPRING);
+  const pomodoroY = useSpring(pomodoroRawY, POM_CLOCK_SPRING);
+  const clockX = useSpring(clockRawX, POM_CLOCK_SPRING);
+  const clockY = useSpring(clockRawY, POM_CLOCK_SPRING);
 
   const integrationsX = useSpring(integrationsRawX, SPRING_CONFIG);
   const integrationsY = useSpring(integrationsRawY, SPRING_CONFIG);
 
-  // coupling strength (how strongly follower moves toward leader)
-  const COUPLING = 0.08;
-  const dragging = useRef(null);
+  // Couplings
+  // reminders <-> myReminders (two-way, default coupling)
+  useCoupling({
+    leader: remindersRawX,
+    follower: myRemindersRawX,
+    draggingRef: dragging,
+    blockedWhenDraggingName: "myReminders",
+    coupling: DEFAULT_COUPLING,
+  });
+  useCoupling({
+    leader: remindersRawY,
+    follower: myRemindersRawY,
+    draggingRef: dragging,
+    blockedWhenDraggingName: "myReminders",
+    coupling: DEFAULT_COUPLING,
+  });
+  useCoupling({
+    leader: myRemindersRawX,
+    follower: remindersRawX,
+    draggingRef: dragging,
+    blockedWhenDraggingName: "reminders",
+    coupling: DEFAULT_COUPLING,
+  });
+  useCoupling({
+    leader: myRemindersRawY,
+    follower: remindersRawY,
+    draggingRef: dragging,
+    blockedWhenDraggingName: "reminders",
+    coupling: DEFAULT_COUPLING,
+  });
 
+  // pomodoro <-> clock (two-way, weaker coupling & deadzone applied)
+  useCoupling({
+    leader: pomodoroRawX,
+    follower: clockRawX,
+    draggingRef: dragging,
+    blockedWhenDraggingName: "clock",
+    coupling: POM_CLOCK_COUPLING,
+  });
+  useCoupling({
+    leader: pomodoroRawY,
+    follower: clockRawY,
+    draggingRef: dragging,
+    blockedWhenDraggingName: "clock",
+    coupling: POM_CLOCK_COUPLING,
+  });
+  useCoupling({
+    leader: clockRawX,
+    follower: pomodoroRawX,
+    draggingRef: dragging,
+    blockedWhenDraggingName: "pomodoro",
+    coupling: POM_CLOCK_COUPLING,
+  });
+  useCoupling({
+    leader: clockRawY,
+    follower: pomodoroRawY,
+    draggingRef: dragging,
+    blockedWhenDraggingName: "pomodoro",
+    coupling: POM_CLOCK_COUPLING,
+  });
+
+  // helper to set global cursor
   const setGlobalCursor = (isGrabbing) => {
     try {
       document.body.style.cursor = isGrabbing ? "grabbing" : "";
-    } catch (e) {}
+    } catch (e) {
+      // ignore (SSR, testing, etc.)
+    }
   };
 
-  // TWO-WAY coupling (operate on RAW motion values)
-  remindersRawX.onChange(() => {
-    if (dragging.current === "myReminders") return;
-    const leader = remindersRawX.get();
-    const follower = myRemindersRawX.get();
-    myRemindersRawX.set(follower + (leader - follower) * COUPLING);
-  });
-  remindersRawY.onChange(() => {
-    if (dragging.current === "myReminders") return;
-    const leader = remindersRawY.get();
-    const follower = myRemindersRawY.get();
-    myRemindersRawY.set(follower + (leader - follower) * COUPLING);
-  });
-
-  myRemindersRawX.onChange(() => {
-    if (dragging.current === "reminders") return;
-    const leader = myRemindersRawX.get();
-    const follower = remindersRawX.get();
-    remindersRawX.set(follower + (leader - follower) * COUPLING);
-  });
-  myRemindersRawY.onChange(() => {
-    if (dragging.current === "reminders") return;
-    const leader = myRemindersRawY.get();
-    const follower = remindersRawY.get();
-    remindersRawY.set(follower + (leader - follower) * COUPLING);
-  });
-
-  pomodoroRawX.onChange(() => {
-    if (dragging.current === "clock") return;
-    const leader = pomodoroRawX.get();
-    const follower = clockRawX.get();
-    clockRawX.set(follower + (leader - follower) * COUPLING);
-  });
-  pomodoroRawY.onChange(() => {
-    if (dragging.current === "clock") return;
-    const leader = pomodoroRawY.get();
-    const follower = clockRawY.get();
-    clockRawY.set(follower + (leader - follower) * COUPLING);
-  });
-
-  clockRawX.onChange(() => {
-    if (dragging.current === "pomodoro") return;
-    const leader = clockRawX.get();
-    const follower = pomodoroRawX.get();
-    pomodoroRawX.set(follower + (leader - follower) * COUPLING);
-  });
-  clockRawY.onChange(() => {
-    if (dragging.current === "pomodoro") return;
-    const leader = clockRawY.get();
-    const follower = pomodoroRawY.get();
-    pomodoroRawY.set(follower + (leader - follower) * COUPLING);
-  });
-
-  // IMPORTANT: framer-motion's native drag won't update our RAW values
-  // if we attach springs directly to the motion.div. To fix reliability,
-  // we update RAW values manually in onDrag using info.delta — then springs
-  // follow those RAW values. This ensures coupling always sees live changes.
+  // we manually increment RAW values with info.delta to keep coupling reliable
   const handleDrag = (rawX, rawY) => (event, info) => {
     rawX.set(rawX.get() + info.delta.x);
     rawY.set(rawY.get() + info.delta.y);
@@ -221,7 +289,8 @@ export default function BackgroundElements() {
       <motion.div
         drag
         dragConstraints={containerRef}
-        dragMomentum={true}
+        // disable momentum for pomodoro/clock to reduce oscillation
+        dragMomentum={false}
         dragElastic={0.2}
         style={{
           x: pomodoroX,
@@ -255,7 +324,8 @@ export default function BackgroundElements() {
       <motion.div
         drag
         dragConstraints={containerRef}
-        dragMomentum={true}
+        // disable momentum for pomodoro/clock to reduce oscillation
+        dragMomentum={false}
         dragElastic={0.22}
         style={{
           x: clockX,
