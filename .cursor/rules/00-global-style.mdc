@@ -1,0 +1,11 @@
+---
+title: "Global: Code style & types"
+alwaysApply: true
+---
+
+- Use TypeScript for all new files. Prefer explicit return types for exported functions/components.
+- Enforce ESLint + Prettier rules; run `npm run lint` and `npm run format` in CI.
+- Avoid `any`. If a one-off `any` is used, add a short inline justification comment.
+- Prefer named exports for components and utilities; default exports only for top-level pages.
+- Keep functions < 60 lines when possible; split complex logic into hooks or utils.
+- Prefer composable hooks (`useXxx`) over prop-drilling. Use `useMemo`/`useCallback` only to prevent real performance problems.

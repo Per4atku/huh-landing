@@ -1,0 +1,8 @@
+---
+alwaysApply: true
+---
+- Define design tokens (colors, spacing, typography) in `tailwind.config.js` and reference them, avoid hard-coded hexs in components.
+- Use `@apply` in component CSS/utility classes for repeated patterns to reduce class duplication.
+- Favor semantic wrapper classes (e.g., `btn`, `container`) that combine utilities in one place.
+- Adopt mobile-first responsive classes; keep a predictable breakpoint strategy.
+- Keep long class lists reasonable — extract repeating patterns into small components or `className` helpers.

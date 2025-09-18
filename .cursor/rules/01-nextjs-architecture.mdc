@@ -1,0 +1,12 @@
+---
+title: "Next.js: architecture & rendering"
+globs: ["app/**", "pages/**"]
+alwaysApply: true
+---
+
+- Prefer the App Router and Server Components for pages that don't require client state. Keep client components minimal. 
+- Use server data fetching (fetch in server components) for SEO-critical pages and static content. Use ISR/revalidate for dynamic but cacheable pages.
+- Prefer SSG for landing pages where content changes infrequently; fallback to SSR for personalized content.  
+- Use Next's built-in image and font optimizations; avoid shipping large font packs.  
+- Keep routing conventions predictable: `app/(marketing)/`, `app/(auth)/`, `app/(dashboard)/`.
+- Use environment variables for secrets; never commit `.env` to repo.

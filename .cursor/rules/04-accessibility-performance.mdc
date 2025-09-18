@@ -1,0 +1,13 @@
+---
+title: "Accessibility & performance"
+globs: ["app/**", "components/**"]
+---
+
+- Accessibility:
+  - All interactive controls must be keyboard reachable and have visible focus states.
+  - Use semantic HTML (button, nav, header, main, footer). Add aria-* only when necessary and justified.
+  - Check color contrast and screen-reader flow for key pages (landing, checkout, forms).
+- Performance:
+  - Use Next Image for responsive images; lazy-load offscreen images.
+  - Avoid shipping large client bundles: only make a component `client` when it truly needs browser APIs.
+  - Measure and maintain Core Web Vitals; optimize Largest Contentful Paint (LCP) and Time to Interactive (TTI).

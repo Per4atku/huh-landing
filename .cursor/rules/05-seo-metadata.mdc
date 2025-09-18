@@ -1,0 +1,9 @@
+---
+title: "SEO & metadata"
+globs: ["app/**", "pages/**", "public/**"]
+---
+
+- Use Next's metadata API to set dynamic title/description/og:image per page.
+- Generate and keep an up-to-date sitemap.xml + robots.txt for public pages.
+- Use static (SSG) rendering for marketing/landing pages when possible to improve crawlability.
+- Add structured data (JSON-LD) on product/landing pages when it provides value.

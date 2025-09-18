@@ -1,0 +1,9 @@
+---
+title: "Testing & CI"
+globs: [".github/**", "package.json"]
+---
+
+- Run type-checks, lint, and unit tests on every PR (fast fail on errors).
+- Unit/component tests: use Vitest or Jest + Testing Library. Snapshot only for stable UI contracts.
+- E2E tests: cover critical flows (signup, landing → conversion) with Playwright or Cypress.
+- Add a predeploy smoke test to staging that validates critical public pages and sitemap availability.

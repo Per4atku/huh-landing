@@ -1,0 +1,9 @@
+---
+title: "Security & dependencies"
+globs: ["package.json"]
+---
+
+- Keep dependencies up to date and monitor for vulnerabilities (Dependabot or similar).
+- Enforce CSP, X-Frame-Options, and secure cookies on server responses.
+- Avoid `dangerouslySetInnerHTML` without sanitization; sanitize any user-provided HTML.
+- Treat third-party scripts carefully (analytics, widgets); lazy-load only when needed and sandbox them.

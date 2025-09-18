@@ -1,0 +1,8 @@
+---
+globs: ["components/**", "app/**", "src/components/**"]
+alwaysApply: false
+---
+- Treat shadcn components as base primitives. Do NOT edit generated shadcn component files directly—wrap or extend them via wrapper components.
+- Keep UI primitives under `src/components/ui/*` and project-specific components under `src/components/*`.
+- Use shadcn's `components.json` and `npx shadcn@latest add` flow for updates; prefer variants and props over copying modifications.
+- When customizing styles, use Tailwind tokens and `className` composition (not direct file edits) so updates are easy.

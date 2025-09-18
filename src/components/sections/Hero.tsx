@@ -3,27 +3,27 @@ import Link from "next/link";
 
 const Hero = () => {
   return (
-    <div className="flex flex-col px-5 gap-5 items-center justify-center h-screen w-full cells-pattern rounded-3xl border border-[#ccc] overflow-clip sm:px-8 sm:gap-8">
-      <div className="flex shadow-[11.26px_11.26px_30.03px_0_rgba(0,0,0,0.35)] justify-center items-center w-26 aspect-square bg-gradient-to-br from-[#ffffff] from-50% to-100% to-[#c4c4c4] rounded-3xl sm:w-[142px]">
+    <div className="cells-pattern flex h-screen w-full flex-col items-center justify-center gap-5 overflow-clip rounded-3xl border border-[#ccc] px-5 sm:gap-8 sm:px-8">
+      <div className="flex aspect-square w-26 items-center justify-center rounded-3xl bg-gradient-to-br from-50% from-[#ffffff] to-100% to-[#c4c4c4] shadow-[11.26px_11.26px_30.03px_0_rgba(0,0,0,0.35)] sm:w-[142px]">
         <Image
           src={"/logo.png"}
           alt="logo showing 🤨"
           width={67}
           height={67}
           priority
-          className="w-24 h-24"
+          className="h-24 w-24"
         />
       </div>
-      <h1 className="text-3xl font-bold text-center sm:text-6xl">
+      <h1 className="text-center font-bold text-3xl sm:text-6xl">
         Reflect, Strategize, and Monitor <br />
-        <span className="text-muted-foreground font-medium">
+        <span className="font-medium text-muted-foreground">
           all in one place
         </span>
       </h1>
       <p className="text-center text-lg sm:text-2xl">
         Effectively organize your tasks and enhance productivity.
       </p>
-      <div className="flex gap-2 flex-col sm:flex-row">
+      <div className="flex flex-col gap-2 sm:flex-row">
         <Link href="/" className="">
           <Image
             width={150}
