@@ -128,16 +128,16 @@
 
 .cells-pattern {
   background-color: white;
-  background-image: linear-gradient(to right, #000 1px, transparent 1px),
-    linear-gradient(to bottom, #000 1px, transparent 1px);
+  background-image:
+    linear-gradient(to right, #000 1px, transparent 1px), linear-gradient(to bottom, #000 1px, transparent 1px);
   background-size: 32px 32px;
   background-repeat: repeat;
   background-position: center;
 }
 .cells-pattern {
   background-color: white;
-  background-image: linear-gradient(to bottom, #ccc 1px, transparent 1px),
-    linear-gradient(to right, #ccc 1px, transparent 1px);
+  background-image:
+    linear-gradient(to bottom, #ccc 1px, transparent 1px), linear-gradient(to right, #ccc 1px, transparent 1px);
   background-size: 32px 32px;
   background-position: center;
   background-repeat: repeat;

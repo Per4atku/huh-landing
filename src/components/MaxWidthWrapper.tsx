@@ -8,12 +8,7 @@ interface MaxWidthWrapperProps {
   id?: string;
 }
 
-const MaxWidthWrapper: React.FC<MaxWidthWrapperProps> = ({
-  children,
-  className = "",
-  maxWidth = "1200px",
-  id,
-}) => {
+const MaxWidthWrapper: React.FC<MaxWidthWrapperProps> = ({ children, className = "", maxWidth = "1200px", id }) => {
   return (
     <div
       id={id}

@@ -10,7 +10,7 @@
     "includes": ["**", "!node_modules", "!.next", "!dist", "!build"]
   },
   "formatter": {
-    "lineWidth": 80,
+    "lineWidth": 120,
     "enabled": true,
     "indentStyle": "space",
     "indentWidth": 2
