@@ -21,9 +21,6 @@
       "recommended": true,
       "suspicious": {
         "noUnknownAtRules": "off"
-      },
-      "nursery": {
-        "useSortedClasses": "warn"
       }
     },
     "domains": {
