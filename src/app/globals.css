@@ -118,5 +118,44 @@
   }
   body {
     @apply bg-background text-foreground;
+
+    margin: 0;
+    min-height: 100vh;
+
+    /* Grid pattern with fixed 32x32px cells */
   }
+}
+
+.cells-pattern {
+  background-color: white;
+  background-image: linear-gradient(to right, #000 1px, transparent 1px),
+    linear-gradient(to bottom, #000 1px, transparent 1px);
+  background-size: 32px 32px;
+  background-repeat: repeat;
+  background-position: center;
+}
+.cells-pattern {
+  background-color: white;
+  background-image: linear-gradient(to bottom, #ccc 1px, transparent 1px),
+    linear-gradient(to right, #ccc 1px, transparent 1px);
+  background-size: 32px 32px;
+  background-position: center;
+  background-repeat: repeat;
+  position: relative;
+  overflow: hidden;
+}
+
+.cells-pattern::before {
+  content: "";
+  position: absolute;
+  top: 0;
+  bottom: 0;
+  left: 0;
+  right: 0;
+
+  /* Mask: cover left & right borders */
+  background: white;
+  width: 1px; /* line thickness */
+  box-shadow: calc(100% - 1px) 0 white;
+  pointer-events: none;
 }
