@@ -2,7 +2,7 @@ import Image from "next/image";
 
 const Demo = () => {
   return (
-    <div className="relative h-svh flex flex-col items-center justify-center gap-14 sm:h-screen">
+    <div className="relative h-screen flex flex-col items-center justify-center gap-14 ">
       {/* Heading + small dash image */}
       <div className="relative">
         <h2 className="text-3xl text-center sm:text-5xl">
