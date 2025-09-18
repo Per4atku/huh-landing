@@ -5,7 +5,7 @@ import Hero from "@/components/sections/Hero";
 export default function Home() {
   return (
     <main>
-      <MaxWidthWrapper maxWidth={8000}>
+      <MaxWidthWrapper className="scroll-container" maxWidth={8000}>
         <Hero />
         <MaxWidthWrapper maxWidth={1200}>
           <Demo />

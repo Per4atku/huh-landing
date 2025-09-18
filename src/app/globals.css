@@ -143,18 +143,31 @@
   }
 }
 
+/* Scroll container */
+.scroll-container {
+  height: 100vh;
+  overflow-y: scroll;
+  scroll-snap-type: y mandatory;
+  scroll-behavior: smooth;
+}
+
+/* Individual sections */
+.snap-section {
+  scroll-snap-align: start;
+}
+
 .cells-pattern {
   background-color: white;
-  background-image:
-    linear-gradient(to right, #000 1px, transparent 1px), linear-gradient(to bottom, #000 1px, transparent 1px);
+  background-image: linear-gradient(to right, #000 1px, transparent 1px),
+    linear-gradient(to bottom, #000 1px, transparent 1px);
   background-size: 32px 32px;
   background-repeat: repeat;
   background-position: center;
 }
 .cells-pattern {
   background-color: white;
-  background-image:
-    linear-gradient(to bottom, #ccc 1px, transparent 1px), linear-gradient(to right, #ccc 1px, transparent 1px);
+  background-image: linear-gradient(to bottom, #ccc 1px, transparent 1px),
+    linear-gradient(to right, #ccc 1px, transparent 1px);
   background-size: 32px 32px;
   background-position: center;
   background-repeat: repeat;

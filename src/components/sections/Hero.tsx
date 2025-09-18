@@ -11,7 +11,7 @@ const Hero = () => {
   const matches = useMediaQuery("(min-width: 960px)");
 
   return (
-    <div className="cells-pattern relative flex h-svh w-full flex-col items-center justify-center gap-5 overflow-clip rounded-3xl border border-[#ccc] px-5 sm:gap-8 sm:px-8 sm:h-screen">
+    <div className="snap-section cells-pattern relative flex h-svh w-full flex-col items-center justify-center gap-5 overflow-clip rounded-3xl border border-[#ccc] px-5 sm:gap-8 sm:px-8 sm:h-screen">
       {matches && <BackgroundElements />}
 
       {/* Main contents with z-index 50 */}
