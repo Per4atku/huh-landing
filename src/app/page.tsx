@@ -1,5 +1,6 @@
 import MaxWidthWrapper from "@/components/MaxWidthWrapper";
 import Demo from "@/components/sections/Demo";
+import Features from "@/components/sections/Features";
 import Hero from "@/components/sections/Hero";
 
 export default function Home() {
@@ -9,6 +10,7 @@ export default function Home() {
         <Hero />
         <MaxWidthWrapper maxWidth={1200}>
           <Demo />
+          <Features />
         </MaxWidthWrapper>
       </MaxWidthWrapper>
     </main>
