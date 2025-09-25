@@ -1,7 +1,5 @@
 "use client";
 
-import { Swiper, SwiperSlide } from "swiper/react";
-import "swiper/css";
 import { Button } from "../ui/button";
 import { CircleCheck } from "lucide-react";
 import { Separator } from "../ui/separator";
