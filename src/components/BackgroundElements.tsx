@@ -32,6 +32,14 @@ function useCoupling({
   coupling = DEFAULT_COUPLING,
   deadzone = COUPLING_DEADZONE,
   maxJump = MAX_JUMP_DISTANCE,
+}: {
+  leader: import("framer-motion").MotionValue<number>;
+  follower: import("framer-motion").MotionValue<number>;
+  draggingRef: React.MutableRefObject<string | null>;
+  blockedWhenDraggingName: string;
+  coupling?: number;
+  deadzone?: number;
+  maxJump?: number;
 }) {
   useEffect(() => {
     const unsub = leader.onChange(() => {
@@ -68,8 +76,8 @@ function useCoupling({
 }
 
 export default function BackgroundElements() {
-  const containerRef = useRef(null);
-  const dragging = useRef(null);
+  const containerRef = useRef<HTMLDivElement>(null);
+  const dragging = useRef<string | null>(null);
 
   // RAW motion values
   const prodRawX = useMotionValue(0);
@@ -168,7 +176,7 @@ export default function BackgroundElements() {
   });
 
   // helper to set global cursor
-  const setGlobalCursor = (isGrabbing) => {
+  const setGlobalCursor = (isGrabbing: boolean) => {
     try {
       document.body.style.cursor = isGrabbing ? "grabbing" : "";
     } catch (e) {
@@ -177,10 +185,15 @@ export default function BackgroundElements() {
   };
 
   // we manually increment RAW values with info.delta to keep coupling reliable
-  const handleDrag = (rawX, rawY) => (event, info) => {
-    rawX.set(rawX.get() + info.delta.x);
-    rawY.set(rawY.get() + info.delta.y);
-  };
+  const handleDrag =
+    (
+      rawX: import("framer-motion").MotionValue<number>,
+      rawY: import("framer-motion").MotionValue<number>
+    ) =>
+    (event: MouseEvent | TouchEvent, info: import("framer-motion").PanInfo) => {
+      rawX.set(rawX.get() + info.delta.x);
+      rawY.set(rawY.get() + info.delta.y);
+    };
 
   return (
     <div className="absolute inset-0 pointer-events-none" ref={containerRef}>
