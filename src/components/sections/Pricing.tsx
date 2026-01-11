@@ -125,7 +125,7 @@ const Pricing = () => {
             }}
             transition={{ duration: 0.3 }}
             className={twMerge(
-              `${plan.bg} border border-gray-200 rounded-2xl p-6 shadow-[5px_2px_10px_rgba(0,0,0,0.25),-5px_-2px_10px_rgba(0,0,0,0.25)]`,
+              `${plan.bg} relative border border-gray-200 rounded-2xl p-6 shadow-[5px_2px_10px_rgba(0,0,0,0.25),-5px_-2px_10px_rgba(0,0,0,0.25)]`,
               plan.isPopular && "lg:-translate-y-4 lg:scale-105 border-gray-600"
             )}
             style={{ color: plan.isPopular ? "white" : "black" }}
