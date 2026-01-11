@@ -18,12 +18,16 @@ const Hero = () => {
       <div className="relative z-50 flex flex-col items-center justify-center gap-5 pointer-events-none">
         <div className="flex aspect-square w-26 items-center justify-center rounded-3xl bg-gradient-to-br from-50% from-[#ffffff] to-100% to-[#c4c4c4] shadow-[11.26px_11.26px_30.03px_0_rgba(0,0,0,0.35)] sm:w-[142px]">
           <Image
-            src={"/logo.png"}
+            src="/logo.png"
             alt="logo showing 🤨"
-            width={67}
-            height={67}
+            width={96}
+            height={96}
             priority
+            fetchPriority="high"
+            sizes="(max-width: 640px) 64px, 96px"
             className="h-16 w-16 sm:h-24 sm:w-24"
+            placeholder="blur"
+            blurDataURL="data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAAgAAAAICAYAAADED76LAAAACXBIWXMAAAsTAAALEwEAmpwYAAAARklEQVQYlWP4////fwYGBgYGJgYKABMDhQARgImBAoAowAQzDUUxIyMjAyMDw38GRkZGBkZGRgYmJiYGRiYmBgYmRgYGBgYAANsHB/6jP8QAAAAASUVORK5CYII="
           />
         </div>
 
@@ -46,22 +50,26 @@ const Hero = () => {
         </p>
 
         <div className="flex flex-col gap-2 sm:flex-row">
-          <Link className=" pointer-events-auto" href="/">
+          <Link className="pointer-events-auto" href="/">
             <Image
-              width={150}
-              height={50}
+              width={180}
+              height={60}
+              sizes="(max-width: 640px) 150px, 180px"
               className="h-[50px] w-[150px] sm:h-[60px] sm:w-[180px]"
               alt="App Store download button"
-              src={"/app-store.svg"}
+              src="/app-store.svg"
+              priority
             />
           </Link>
           <Link className="pointer-events-auto" href="/">
             <Image
-              height={50}
-              width={150}
+              height={60}
+              width={180}
+              sizes="(max-width: 640px) 150px, 180px"
               className="h-[50px] w-[150px] sm:h-[60px] sm:w-[180px]"
               alt="Google Play download button"
-              src={"/google-play.webp"}
+              src="/google-play.webp"
+              priority
             />
           </Link>
         </div>
